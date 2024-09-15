@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ElderyCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hrV-YH-gs2">
+                                <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                                <items>
+                                    <navigationItem title="Title" id="dUt-bF-uU3">
+                                        <barButtonItem key="rightBarButtonItem" image="arrow.clockwise" catalog="system" id="8Ph-cD-UUw" userLabel="refreshBtn">
+                                            <connections>
+                                                <action selector="refreshBtn:" destination="BYZ-38-t0r" id="1mX-yf-ams"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disconnected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xHP-Vd-uz4" userLabel="connectionLbl">
+                                <rect key="frame" x="271" y="122" width="106" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Fetching data..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Foo-Ef-dBY" userLabel="dataLbl">
+                                <rect key="frame" x="16" y="227" width="361" height="355"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="hrV-YH-gs2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="1vr-hW-t2h"/>
+                            <constraint firstItem="Foo-Ef-dBY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dzu-or-DGA"/>
+                            <constraint firstItem="Foo-Ef-dBY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EyX-4n-8Bj"/>
+                            <constraint firstItem="Foo-Ef-dBY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="FBw-dW-abR"/>
+                            <constraint firstItem="hrV-YH-gs2" firstAttribute="centerX" secondItem="Foo-Ef-dBY" secondAttribute="centerX" id="d6r-5A-F7b"/>
+                            <constraint firstItem="xHP-Vd-uz4" firstAttribute="top" secondItem="hrV-YH-gs2" secondAttribute="bottom" constant="19" id="dl9-JF-yCj"/>
+                            <constraint firstItem="xHP-Vd-uz4" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="e9m-qa-oSo"/>
+                            <constraint firstItem="hrV-YH-gs2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nzH-d1-yP5"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Foo-Ef-dBY" secondAttribute="bottom" constant="187" id="rEU-FF-JaQ"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="appTitle" destination="dUt-bF-uU3" id="SgA-eU-Jre"/>
+                        <outlet property="connectionLbl" destination="xHP-Vd-uz4" id="EwZ-ZP-fLK"/>
+                        <outlet property="dataLbl" destination="Foo-Ef-dBY" id="NLN-of-lf2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="135.1145038167939" y="3.5211267605633805"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="arrow.clockwise" catalog="system" width="113" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
