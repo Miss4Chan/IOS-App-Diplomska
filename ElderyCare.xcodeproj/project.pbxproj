@@ -13,6 +13,9 @@
 		B3CE5B0A2C70C232006C2452 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B3CE5B092C70C232006C2452 /* Base */; };
 		B3CE5B0C2C70C234006C2452 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3CE5B0B2C70C234006C2452 /* Assets.xcassets */; };
 		B3CE5B0F2C70C234006C2452 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B3CE5B0E2C70C234006C2452 /* Base */; };
+		B3FB39192CA07AF700669021 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB39182CA07AF700669021 /* BluetoothManager.swift */; };
+		B3FB391B2CA07C2000669021 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB391A2CA07C2000669021 /* APIManager.swift */; };
+		B3FB391D2CA07CA600669021 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB391C2CA07CA600669021 /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		B3CE5B0B2C70C234006C2452 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3CE5B0E2C70C234006C2452 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3CE5B102C70C234006C2452 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3FB39182CA07AF700669021 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		B3FB391A2CA07C2000669021 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		B3FB391C2CA07CA600669021 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,9 @@
 		B3CE5B012C70C232006C2452 /* ElderyCare */ = {
 			isa = PBXGroup;
 			children = (
+				B3FB391C2CA07CA600669021 /* Config.swift */,
+				B3FB391A2CA07C2000669021 /* APIManager.swift */,
+				B3FB39182CA07AF700669021 /* BluetoothManager.swift */,
 				B3CE5B022C70C232006C2452 /* AppDelegate.swift */,
 				B3CE5B042C70C232006C2452 /* SceneDelegate.swift */,
 				B3CE5B062C70C232006C2452 /* ViewController.swift */,
@@ -140,7 +149,10 @@
 			files = (
 				B3CE5B072C70C232006C2452 /* ViewController.swift in Sources */,
 				B3CE5B032C70C232006C2452 /* AppDelegate.swift in Sources */,
+				B3FB391B2CA07C2000669021 /* APIManager.swift in Sources */,
+				B3FB39192CA07AF700669021 /* BluetoothManager.swift in Sources */,
 				B3CE5B052C70C232006C2452 /* SceneDelegate.swift in Sources */,
+				B3FB391D2CA07CA600669021 /* Config.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

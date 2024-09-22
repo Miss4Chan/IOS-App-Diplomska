@@ -34,8 +34,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Fetching data..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Foo-Ef-dBY" userLabel="dataLbl">
-                                <rect key="frame" x="16" y="227" width="361" height="355"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching data..." textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JTF-aN-e7p">
+                                <rect key="frame" x="16" y="211" width="361" height="20.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event:" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAA-c2-lG0">
+                                <rect key="frame" x="16" y="294" width="361" height="20.333333333333371"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -45,22 +52,21 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="hrV-YH-gs2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="1vr-hW-t2h"/>
-                            <constraint firstItem="Foo-Ef-dBY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dzu-or-DGA"/>
-                            <constraint firstItem="Foo-Ef-dBY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EyX-4n-8Bj"/>
-                            <constraint firstItem="Foo-Ef-dBY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="FBw-dW-abR"/>
-                            <constraint firstItem="hrV-YH-gs2" firstAttribute="centerX" secondItem="Foo-Ef-dBY" secondAttribute="centerX" id="d6r-5A-F7b"/>
+                            <constraint firstItem="JTF-aN-e7p" firstAttribute="top" secondItem="xHP-Vd-uz4" secondAttribute="bottom" constant="68" id="3aO-VA-Hb3"/>
+                            <constraint firstItem="hrV-YH-gs2" firstAttribute="centerX" secondItem="JTF-aN-e7p" secondAttribute="centerX" id="JG0-Uv-mNv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JTF-aN-e7p" secondAttribute="trailing" constant="16" id="XxL-1a-3A6"/>
                             <constraint firstItem="xHP-Vd-uz4" firstAttribute="top" secondItem="hrV-YH-gs2" secondAttribute="bottom" constant="19" id="dl9-JF-yCj"/>
                             <constraint firstItem="xHP-Vd-uz4" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="e9m-qa-oSo"/>
+                            <constraint firstItem="JTF-aN-e7p" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="nrm-k0-ZbO"/>
                             <constraint firstItem="hrV-YH-gs2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nzH-d1-yP5"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Foo-Ef-dBY" secondAttribute="bottom" constant="187" id="rEU-FF-JaQ"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="appTitle" destination="dUt-bF-uU3" id="SgA-eU-Jre"/>
-                        <outlet property="connectionLbl" destination="xHP-Vd-uz4" id="EwZ-ZP-fLK"/>
-                        <outlet property="dataLbl" destination="Foo-Ef-dBY" id="NLN-of-lf2"/>
+                        <outlet property="connectionLbl" destination="xHP-Vd-uz4" id="Ix4-8U-Lqr"/>
+                        <outlet property="dataLbl" destination="JTF-aN-e7p" id="60l-Oh-SJa"/>
+                        <outlet property="eventDataLbl" destination="hAA-c2-lG0" id="ZyD-LG-djD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

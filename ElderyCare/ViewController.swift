@@ -1,430 +1,87 @@
-//
-//  ViewController.swift
-//  ElderyCare
-//
-//  Created by Despina Misheva on 17.8.24.
-//
-
 import UIKit
-import Foundation
-import CoreBluetooth
 
-var curPeripheral: CBPeripheral?
-var txCharacteristic:  CBCharacteristic?
-var rxCharacteristic:  CBCharacteristic?
-
-class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate {
-    
-   
-    var centralManager: CBCentralManager!
-    var rssiList = [NSNumber]()
-    var peripheralList: [CBPeripheral] = []
-    var characteristicList = [String: CBCharacteristic]()
-    var characteristicValue = [CBUUID: NSData]()
-    var timer = Timer()
-        
-    let BLE_Service_UUID = CBUUID.init(string: "6e400001-b5a3-f393-e0a9-e50e24dcca9e")
-    let BLE_Characteristic_uuid_Rx = CBUUID.init(string: "6e400003-b5a3-f393-e0a9-e50e24dcca9e")
-    let BLE_Characteristic_uuid_Tx  = CBUUID.init(string: "6e400002-b5a3-f393-e0a9-e50e24dcca9e")
+class ViewController: UIViewController, BluetoothManagerDelegate {
     
     @IBOutlet weak var connectionLbl: UILabel!
     @IBOutlet weak var dataLbl: UILabel!
-    
-    @IBOutlet weak var appTitle: UINavigationItem!
-    
+    @IBOutlet weak var eventDataLbl: UILabel!
     
     @IBAction func refreshBtn(_ sender: Any) {
-        if (curPeripheral != nil) {
-                    centralManager?.cancelPeripheralConnection(curPeripheral!)
-                }
-                usleep(1000000)
-                startScan()
+        if let peripheral = BluetoothManager.shared.curPeripheral {
+            BluetoothManager.shared.centralManager.cancelPeripheralConnection(peripheral)
+        }
+        BluetoothManager.shared.startScan()
     }
+
     
-    //ova ide na pochetok
+    func didUpdateConnectionStatus(isConnected: Bool) {
+        DispatchQueue.main.async {
+            if isConnected {
+                self.connectionLbl.text = "Connected!"
+                self.connectionLbl.textColor = UIColor.blue
+            } else {
+                self.connectionLbl.text = "Disconnected"
+                self.connectionLbl.textColor = UIColor.red
+            }
+        }
+    }
+
     override func viewDidLoad() {
-           super.viewDidLoad()
-        appTitle.title = "Elderly Care";
-        connectionLbl.text = "Disconnected"
-        connectionLbl.textColor = UIColor.red
-           centralManager = CBCentralManager(delegate: self, queue: nil)
-       }
-       
-       // This function is called right after the view is loaded onto the screen
-       override func viewDidAppear(_ animated: Bool) {
-           super.viewDidAppear(animated)
-           
-           // Reset the peripheral connection with the app
-           if curPeripheral != nil {
-               centralManager?.cancelPeripheralConnection(curPeripheral!)
-           }
-           print("View Cleared")
-       }
-       
-       // This function is called right before view disappears from screen
-       override func viewWillDisappear(_ animated: Bool) {
-           super.viewWillDisappear(animated)
-           print("Stop Scanning")
-           
-           // Central Manager object stops the scanning for peripherals
-           centralManager?.stopScan()
-       }
-
-       // Called when manager's state is changed
-       // Required method for setting up centralManager object
-       func centralManagerDidUpdateState(_ central: CBCentralManager) {
-           
-           // If manager's state is "poweredOn", that means Bluetooth has been enabled
-           // in the app. We can begin scanning for peripherals
-           if central.state == CBManagerState.poweredOn {
-               print("Bluetooth Enabled")
-               startScan()
-           }
-           
-           // Else, Bluetooth has NOT been enabled, so we display an alert message to the screen
-           // saying that Bluetooth needs to be enabled to use the app
-           else {
-               print("Bluetooth Disabled- Make sure your Bluetooth is turned on")
-
-               let alertVC = UIAlertController(title: "Bluetooth is not enabled",
-                                               message: "Make sure that your bluetooth is turned on",
-                                               preferredStyle: UIAlertController.Style.alert)
-               
-               let action = UIAlertAction(title: "ok",
-                                          style: UIAlertAction.Style.default,
-                                          handler: { (action: UIAlertAction) -> Void in
-                                                   self.dismiss(animated: true, completion: nil)
-                                                   })
-               alertVC.addAction(action)
-               self.present(alertVC, animated: true, completion: nil)
-           }
-       }
-       
-       // Start scanning for peripherals
-       func startScan() {
-           print("Now Scanning...")
-           print("Service ID Search: \(BLE_Service_UUID)")
-           
-           // Make an empty list of peripherals that were found
-           peripheralList = []
-           
-           // Stop the timer
-           self.timer.invalidate()
-           
-           // Call method in centralManager class that actually begins the scanning.
-           // We are targeting services that have the same UUID value as the BLE_Service_UUID variable.
-           // Use a timer to wait 10 seconds before calling cancelScan().
-           centralManager?.scanForPeripherals(withServices: [BLE_Service_UUID],
-                                              options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
-           Timer.scheduledTimer(withTimeInterval: 10, repeats: false) {_ in
-               self.cancelScan()
-           }
-       }
-       
-       // Cancel scanning for peripheral
-       func cancelScan() {
-           self.centralManager?.stopScan()
-           print("Scan Stopped")
-           print("Number of Peripherals Found: \(peripheralList.count)")
-       }
-
-       // Called when a peripheral is found.
-       func centralManager(_ central: CBCentralManager,
-                           didDiscover peripheral: CBPeripheral,
-                           advertisementData: [String : Any],
-                           rssi RSSI: NSNumber) {
-           
-           // The peripheral that was just found is stored in a variable and
-           // is added to a list of peripherals. Its rssi value is also added to a list
-           curPeripheral = peripheral
-           self.peripheralList.append(peripheral)
-           self.rssiList.append(RSSI)
-           peripheral.delegate = self
-
-           // Connect to the peripheral if it exists / has services
-           if curPeripheral != nil {
-               centralManager?.connect(curPeripheral!, options: nil)
-           }
-       }
-       
-       // Restore the Central Manager delegate if something goes wrong
-       func restoreCentralManager() {
-           centralManager?.delegate = self
-       }
-
-       // Called when app successfully connects with the peripheral
-       // Use this method to set up the peripheral's delegate and discover its services
-       func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-           print("-------------------------------------------------------")
-           print("Connection complete")
-           print("Peripheral info: \(String(describing: curPeripheral))")
-           
-           // Stop scanning because we found the peripheral we want
-           cancelScan()
-           
-           // Set up peripheral's delegate
-           peripheral.delegate = self
-           
-           // Only look for services that match our specified UUID
-           peripheral.discoverServices([BLE_Service_UUID])
-       }
-       
-       // Called when the central manager fails to connect to a peripheral
-       func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-           
-           // Print error message to console for debugging purposes
-           if error != nil {
-               print("Failed to connect to peripheral")
-               return
-           }
-       }
-       
-       // Called when the central manager disconnects from the peripheral
-       func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-           print("Disconnected")
-           connectionLbl.text = "Disconnected"
-           connectionLbl.textColor = UIColor.red
-       }
-       
-       // Called when the correct peripheral's services are discovered
-       func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-           print("-------------------------------------------------------")
-           
-           // Check for any errors in discovery
-           if ((error) != nil) {
-               print("Error discovering services: \(error!.localizedDescription)")
-               return
-           }
-
-           // Store the discovered services in a variable. If no services are there, return
-           guard let services = peripheral.services else {
-               return
-           }
-           
-           // Print to console for debugging purposes
-           print("Discovered Services: \(services)")
-
-           // For every service found...
-           for service in services {
-               
-               // If service's UUID matches with our specified one...
-               if service.uuid == BLE_Service_UUID {
-                   print("Service found")
-                   connectionLbl.text = "Connected!"
-                   connectionLbl.textColor = UIColor.blue
-                   
-                   // Search for the characteristics of the service
-                   peripheral.discoverCharacteristics(nil, for: service)
-               }
-           }
-       }
-       
-       // Called when the characteristics we specified are discovered
-       func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-           print("-------------------------------------------------------")
-           
-           // Check if there was an error
-           if ((error) != nil) {
-               print("Error discovering services: \(error!.localizedDescription)")
-               return
-           }
-           
-           // Store the discovered characteristics in a variable. If no characteristics, then return
-           guard let characteristics = service.characteristics else {
-               return
-           }
-           
-           // Print to console for debugging purposes
-           print("Found \(characteristics.count) characteristics!")
-           
-           // For every characteristic found...
-           for characteristic in characteristics {
-               // If characteritstic's UUID matches with our specified one for Rx...
-               if characteristic.uuid.isEqual(BLE_Characteristic_uuid_Rx)  {
-                   rxCharacteristic = characteristic
-                   
-                   // Subscribe to the this particular characteristic
-                   // This will also call didUpdateNotificationStateForCharacteristic
-                   // method automatically
-                   peripheral.setNotifyValue(true, for: rxCharacteristic!)
-                   peripheral.readValue(for: characteristic)
-                   print("Rx Characteristic: \(characteristic.uuid)")
-               }
-               
-               // If characteritstic's UUID matches with our specified one for Tx...
-               if characteristic.uuid.isEqual(BLE_Characteristic_uuid_Tx){
-                   txCharacteristic = characteristic
-                   print("Tx Characteristic: \(characteristic.uuid)")
-               }
-               
-               // Find descriptors for each characteristic
-               peripheral.discoverDescriptors(for: characteristic)
-           }
-       }
-       
-       // Sets up notifications to the app from the Feather
-       // Calls didUpdateValueForCharacteristic() whenever characteristic's value changes
-       func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-           print("*******************************************************")
-
-           // Check if subscription was successful
-           if (error != nil) {
-               print("Error changing notification state:\(String(describing: error?.localizedDescription))")
-
-           } else {
-               print("Characteristic's value subscribed")
-           }
-
-           // Print message for debugging purposes
-           if (characteristic.isNotifying) {
-               print ("Subscribed. Notification has begun for: \(characteristic.uuid)")
-           }
-       }
-       
-       // Called when peripheral.readValue(for: characteristic) is called
-       // Also called when characteristic value is updated in
-       // didUpdateNotificationStateFor() method
-//       func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic,
-//                       error: Error?) {
-//           
-//           // If characteristic is correct, read its value and save it to a string.
-//           // Else, return
-//           guard characteristic == rxCharacteristic,
-//           let characteristicValue = characteristic.value,
-//           let receivedString = NSString(data: characteristicValue,
-//                                         encoding: String.Encoding.utf8.rawValue)
-//           else { return }
-//           
-//           print(receivedString)
-//           dataLbl.text = "Value: " + (receivedString as String)
-//           NotificationCenter.default.post(name:NSNotification.Name(rawValue: "Notify"), object: self)
-//       }
-    var receivedDataBuffer: String = ""
-
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard characteristic == rxCharacteristic,
-              let characteristicValue = characteristic.value,
-              let receivedString = String(data: characteristicValue, encoding: .utf8) else {
-            return
-        }
+        super.viewDidLoad()
+        self.navigationItem.title = "Elder Care"
         
-        if let data = receivedString.data(using: .utf8),
-           let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
-           let jsonDict = jsonObject as? [String: Any] {
-
-            if let heartRate = jsonDict["bpm"] as? Double,
-               let timestamp = jsonDict["timestamp"] as? String {
-
-                // Check if it's a regular heart rate data
-                if jsonDict["confirm"] == nil {
-                    // This is regular heart rate data
-                    dataLbl.text = "HR: \(heartRate), Timestamp: \(timestamp)"
-                    sendHeartRateToAPI(heartRate: heartRate, timestamp: timestamp)
-                }
-
-                // Check if it's confirmation data
-                if let confirm = jsonDict["confirm"] as? Bool,
-                   let timeOfConfirmation = jsonDict["timeOfConfirmation"] as? String {
-                    // Handle confirmation data
-                    dataLbl.text = "HR: \(heartRate), Confirmed: \(confirm ? "Yes" : "No")"
-                    sendHighHeartRateToAPI(heartRate: heartRate, confirm: confirm, timeOfConfirmation: timeOfConfirmation)
-                }
-            }
-        }
-    }
-
-    func sendHeartRateToAPI(heartRate: Double, timestamp: String) {
-        let heartRateDto: [String: Any] = [
-            "measurement": heartRate,
-            "timestamp": timestamp
-        ]
+        BluetoothManager.shared.delegate = self
         
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: heartRateDto) else {
-            print("Failed to serialize heart rate data")
-            return
+        print("Starting Bluetooth scan...")
+        BluetoothManager.shared.startScan()
+    }
+
+    
+    func didReceiveRegularHeartRate(_ heartRate: Double, timestamp: String) {
+        print("UI: Updating regular heart rate label.")
+        DispatchQueue.main.async {
+            self.dataLbl.text = "HR: \(heartRate), Timestamp: \(timestamp)"
+            self.eventDataLbl.text = "" // Clear event label for regular heart rate
         }
 
-        let url = URL(string: "http://192.168.1.8:5008/api/heartRate/createHeartRate")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        print("Sending regular heart rate to API: \(heartRate), \(timestamp)")
+        
+        APIManager.shared.sendHeartRate(heartRate: heartRate, timestamp: timestamp) { error in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
+                print("Error sending heart rate: \(error)")
+            } else {
+                print("Successfully sent heart rate to API")
             }
-            print("Heart rate sent successfully")
         }
-
-        task.resume()
     }
 
-    func sendHighHeartRateToAPI(heartRate: Double, confirm: Bool, timeOfConfirmation: String) {
-        let highHeartRateDto: [String: Any] = [
-            "timestamp": timeOfConfirmation,
-            "confirm": confirm,
-            "timeOfConfirmation": timeOfConfirmation
-        ]
 
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: highHeartRateDto) else {
-            print("Failed to serialize high heart rate data")
-            return
-        }
+      func didReceiveHighHeartRate(_ heartRate: Double, isConfirmed: Bool, timeOfConfirmation: String, timestamp: String) {
+          print("UI: Updating high BPM label.")
+          DispatchQueue.main.async {
+              self.dataLbl.text = "HR: \(heartRate), Timestamp: \(timestamp)"
+              self.eventDataLbl.text = "High BPM: Confirmed: \(isConfirmed ? "Yes" : "No")"
+          }
 
-        let url = URL(string: "http://192.168.1.8:5008/api/heartRate/createHighHeartRate")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
+          APIManager.shared.sendHighHeartRate(heartRate: heartRate, confirm: isConfirmed, timeOfConfirmation: timeOfConfirmation, timestamp: timestamp) { error in
+              if let error = error {
+                  print("Error sending high heart rate: \(error)")
+              }
+          }
+      }
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
-            }
-            print("High heart rate confirmation sent")
-        }
+      func didReceiveFallDetection(event: [String: Any]) {
+          print("UI: Updating fall detection label.")
+          DispatchQueue.main.async {
+              self.eventDataLbl.text = "Fall Detected: Confirmed: \(event["confirm"] as? Bool ?? false ? "Yes" : "No")"
+          }
 
-        task.resume()
-    }
-
-       
-       // Called when app wants to send a message to peripheral
-       func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-           guard error == nil else {
-               print("Error discovering services: error")
-               return
-           }
-           print("Message sent")
-       }
-
-       // Called when descriptors for a characteristic are found
-       func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
-           
-           // Print for debugging purposes
-           print("*******************************************************")
-           if error != nil {
-               print("\(error.debugDescription)")
-               return
-           }
-           
-           // Store descriptors in a variable. Return if nonexistent.
-           guard let descriptors = characteristic.descriptors else { return }
-               
-           // For every descriptor, print its description for debugging purposes
-           descriptors.forEach { descript in
-               print("function name: DidDiscoverDescriptorForChar \(String(describing: descript.description))")
-               print("Rx Value \(String(describing: rxCharacteristic?.value))")
-               print("Tx Value \(String(describing: txCharacteristic?.value))")
-           }
-       }
-}
-
-
-extension Character {
-    var isPrintable: Bool {
-        return self.isLetter || self.isNumber || self.isPunctuation || self.isWhitespace
-    }
+          APIManager.shared.sendSuddenMovement(event: event) { error in
+              if let error = error {
+                  print("Error sending fall detection: \(error)")
+              } else {
+                  print("Fall detection event sent successfully.")
+              }
+          }
+      }
 }
