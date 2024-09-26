@@ -3,22 +3,48 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B31620432CA1F215001CDC90 /* InitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31620422CA1F215001CDC90 /* InitController.swift */; };
+		B3A80F942CA565AD00397948 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B392C37A2CA55ECD00594563 /* DataManager.swift */; };
+		B3A80F962CA585A000397948 /* HeartDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A80F952CA585A000397948 /* HeartDataViewController.swift */; };
+		B3A80F9B2CA587A700397948 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = B3A80F9A2CA587A700397948 /* DGCharts */; };
+		B3C882912CA5479E000D5754 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C882902CA5479E000D5754 /* User.swift */; };
 		B3CE5B032C70C232006C2452 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CE5B022C70C232006C2452 /* AppDelegate.swift */; };
 		B3CE5B052C70C232006C2452 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CE5B042C70C232006C2452 /* SceneDelegate.swift */; };
 		B3CE5B072C70C232006C2452 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CE5B062C70C232006C2452 /* ViewController.swift */; };
 		B3CE5B0A2C70C232006C2452 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B3CE5B092C70C232006C2452 /* Base */; };
 		B3CE5B0C2C70C234006C2452 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3CE5B0B2C70C234006C2452 /* Assets.xcassets */; };
 		B3CE5B0F2C70C234006C2452 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B3CE5B0E2C70C234006C2452 /* Base */; };
+		B3E367F62CA591930049D148 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = B3E367F52CA591930049D148 /* DGCharts */; };
+		B3E367F82CA599C60049D148 /* TimeAxisValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E367F72CA599C60049D148 /* TimeAxisValueFormatter.swift */; };
 		B3FB39192CA07AF700669021 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB39182CA07AF700669021 /* BluetoothManager.swift */; };
 		B3FB391B2CA07C2000669021 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB391A2CA07C2000669021 /* APIManager.swift */; };
 		B3FB391D2CA07CA600669021 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB391C2CA07CA600669021 /* Config.swift */; };
+		B3FB39202CA1EA6900669021 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB391F2CA1EA6900669021 /* LoginController.swift */; };
+		B3FB39222CA1EA8C00669021 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FB39212CA1EA8C00669021 /* RegisterController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		B30B479D2CA58BA8005EC0F2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		B31620422CA1F215001CDC90 /* InitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitController.swift; sourceTree = "<group>"; };
+		B392C37A2CA55ECD00594563 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		B3A80F952CA585A000397948 /* HeartDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartDataViewController.swift; sourceTree = "<group>"; };
+		B3C882902CA5479E000D5754 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B3CE5AFF2C70C232006C2452 /* ElderyCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElderyCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3CE5B022C70C232006C2452 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B3CE5B042C70C232006C2452 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,9 +53,12 @@
 		B3CE5B0B2C70C234006C2452 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3CE5B0E2C70C234006C2452 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3CE5B102C70C234006C2452 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3E367F72CA599C60049D148 /* TimeAxisValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAxisValueFormatter.swift; sourceTree = "<group>"; };
 		B3FB39182CA07AF700669021 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
 		B3FB391A2CA07C2000669021 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		B3FB391C2CA07CA600669021 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		B3FB391F2CA1EA6900669021 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		B3FB39212CA1EA8C00669021 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,16 +66,41 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3E367F62CA591930049D148 /* DGCharts in Frameworks */,
+				B3A80F9B2CA587A700397948 /* DGCharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B3A80F972CA585A800397948 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B3FB39212CA1EA8C00669021 /* RegisterController.swift */,
+				B3CE5B062C70C232006C2452 /* ViewController.swift */,
+				B31620422CA1F215001CDC90 /* InitController.swift */,
+				B3FB391F2CA1EA6900669021 /* LoginController.swift */,
+				B3A80F952CA585A000397948 /* HeartDataViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B3A80F982CA585B400397948 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B3FB391A2CA07C2000669021 /* APIManager.swift */,
+				B3FB39182CA07AF700669021 /* BluetoothManager.swift */,
+				B392C37A2CA55ECD00594563 /* DataManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		B3CE5AF62C70C232006C2452 = {
 			isa = PBXGroup;
 			children = (
 				B3CE5B012C70C232006C2452 /* ElderyCare */,
+				B3E367EF2CA591250049D148 /* Frameworks */,
 				B3CE5B002C70C232006C2452 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,18 +116,34 @@
 		B3CE5B012C70C232006C2452 /* ElderyCare */ = {
 			isa = PBXGroup;
 			children = (
+				B3A80F982CA585B400397948 /* Managers */,
+				B3A80F972CA585A800397948 /* ViewControllers */,
+				B3C882902CA5479E000D5754 /* User.swift */,
 				B3FB391C2CA07CA600669021 /* Config.swift */,
-				B3FB391A2CA07C2000669021 /* APIManager.swift */,
-				B3FB39182CA07AF700669021 /* BluetoothManager.swift */,
-				B3CE5B022C70C232006C2452 /* AppDelegate.swift */,
-				B3CE5B042C70C232006C2452 /* SceneDelegate.swift */,
-				B3CE5B062C70C232006C2452 /* ViewController.swift */,
-				B3CE5B082C70C232006C2452 /* Main.storyboard */,
-				B3CE5B0B2C70C234006C2452 /* Assets.xcassets */,
-				B3CE5B0D2C70C234006C2452 /* LaunchScreen.storyboard */,
+				B3FB391E2CA1E9FA00669021 /* Supporting */,
 				B3CE5B102C70C234006C2452 /* Info.plist */,
+				B3CE5B082C70C232006C2452 /* Main.storyboard */,
 			);
 			path = ElderyCare;
+			sourceTree = "<group>";
+		};
+		B3E367EF2CA591250049D148 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B3FB391E2CA1E9FA00669021 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				B3E367F72CA599C60049D148 /* TimeAxisValueFormatter.swift */,
+				B3CE5B042C70C232006C2452 /* SceneDelegate.swift */,
+				B3CE5B022C70C232006C2452 /* AppDelegate.swift */,
+				B3CE5B0B2C70C234006C2452 /* Assets.xcassets */,
+				B3CE5B0D2C70C234006C2452 /* LaunchScreen.storyboard */,
+			);
+			path = Supporting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,6 +156,7 @@
 				B3CE5AFB2C70C232006C2452 /* Sources */,
 				B3CE5AFC2C70C232006C2452 /* Frameworks */,
 				B3CE5AFD2C70C232006C2452 /* Resources */,
+				B30B479D2CA58BA8005EC0F2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -112,7 +183,6 @@
 				};
 			};
 			buildConfigurationList = B3CE5AFA2C70C232006C2452 /* Build configuration list for PBXProject "ElderyCare" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -120,6 +190,10 @@
 				Base,
 			);
 			mainGroup = B3CE5AF62C70C232006C2452;
+			packageReferences = (
+				B3E367F42CA591930049D148 /* XCRemoteSwiftPackageReference "Charts" */,
+			);
+			preferredProjectObjectVersion = 77;
 			productRefGroup = B3CE5B002C70C232006C2452 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -148,11 +222,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3CE5B072C70C232006C2452 /* ViewController.swift in Sources */,
+				B31620432CA1F215001CDC90 /* InitController.swift in Sources */,
 				B3CE5B032C70C232006C2452 /* AppDelegate.swift in Sources */,
 				B3FB391B2CA07C2000669021 /* APIManager.swift in Sources */,
 				B3FB39192CA07AF700669021 /* BluetoothManager.swift in Sources */,
+				B3A80F962CA585A000397948 /* HeartDataViewController.swift in Sources */,
+				B3FB39222CA1EA8C00669021 /* RegisterController.swift in Sources */,
 				B3CE5B052C70C232006C2452 /* SceneDelegate.swift in Sources */,
+				B3E367F82CA599C60049D148 /* TimeAxisValueFormatter.swift in Sources */,
 				B3FB391D2CA07CA600669021 /* Config.swift in Sources */,
+				B3A80F942CA565AD00397948 /* DataManager.swift in Sources */,
+				B3C882912CA5479E000D5754 /* User.swift in Sources */,
+				B3FB39202CA1EA6900669021 /* LoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +388,8 @@
 				DEVELOPMENT_TEAM = DGNQ78PYKF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ElderyCare/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -335,6 +418,8 @@
 				DEVELOPMENT_TEAM = DGNQ78PYKF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ElderyCare/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -375,6 +460,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B3A80F992CA587A700397948 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+		B3E367F42CA591930049D148 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B3A80F9A2CA587A700397948 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3A80F992CA587A700397948 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		B3E367F52CA591930049D148 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3E367F42CA591930049D148 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B3CE5AF72C70C232006C2452 /* Project object */;
 }
