@@ -16,9 +16,12 @@ class LoginController: UIViewController {
     
     @IBOutlet weak var ErrorLabel: UILabel!
     
+    @IBOutlet weak var imageLogo: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let image = UIImage(named: "Logo_elderly_care_supporting")
+        imageLogo.image = image
         ErrorLabel.isHidden = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)

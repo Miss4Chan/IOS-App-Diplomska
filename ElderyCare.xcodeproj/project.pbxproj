@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B30671CB2CA5D2A8007B22BB /* MedicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30671CA2CA5D2A8007B22BB /* MedicationController.swift */; };
+		B30671CD2CA5D2CC007B22BB /* AddMedicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30671CC2CA5D2CC007B22BB /* AddMedicationController.swift */; };
+		B30671D02CA5D2E2007B22BB /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30671CF2CA5D2E2007B22BB /* Day.swift */; };
+		B30671D32CA5D35E007B22BB /* DaysPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30671D22CA5D35E007B22BB /* DaysPickerView.swift */; };
+		B30671D72CA6D1AD007B22BB /* Medication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30671D62CA6D1AD007B22BB /* Medication.swift */; };
 		B31620432CA1F215001CDC90 /* InitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31620422CA1F215001CDC90 /* InitController.swift */; };
 		B3A80F942CA565AD00397948 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B392C37A2CA55ECD00594563 /* DataManager.swift */; };
 		B3A80F962CA585A000397948 /* HeartDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A80F952CA585A000397948 /* HeartDataViewController.swift */; };
@@ -41,6 +46,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B30671CA2CA5D2A8007B22BB /* MedicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationController.swift; sourceTree = "<group>"; };
+		B30671CC2CA5D2CC007B22BB /* AddMedicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicationController.swift; sourceTree = "<group>"; };
+		B30671CF2CA5D2E2007B22BB /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		B30671D22CA5D35E007B22BB /* DaysPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysPickerView.swift; sourceTree = "<group>"; };
+		B30671D62CA6D1AD007B22BB /* Medication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medication.swift; sourceTree = "<group>"; };
 		B31620422CA1F215001CDC90 /* InitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitController.swift; sourceTree = "<group>"; };
 		B392C37A2CA55ECD00594563 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		B3A80F952CA585A000397948 /* HeartDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartDataViewController.swift; sourceTree = "<group>"; };
@@ -50,7 +60,7 @@
 		B3CE5B042C70C232006C2452 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B3CE5B062C70C232006C2452 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B3CE5B092C70C232006C2452 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B3CE5B0B2C70C234006C2452 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B3CE5B0B2C70C234006C2452 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ElderyCare/Supporting/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		B3CE5B0E2C70C234006C2452 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3CE5B102C70C234006C2452 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3E367F72CA599C60049D148 /* TimeAxisValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAxisValueFormatter.swift; sourceTree = "<group>"; };
@@ -74,6 +84,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B30671CE2CA5D2D8007B22BB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B30671D62CA6D1AD007B22BB /* Medication.swift */,
+				B30671CF2CA5D2E2007B22BB /* Day.swift */,
+				B3C882902CA5479E000D5754 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B30671D12CA5D346007B22BB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B30671D22CA5D35E007B22BB /* DaysPickerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		B3A80F972CA585A800397948 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +110,8 @@
 				B31620422CA1F215001CDC90 /* InitController.swift */,
 				B3FB391F2CA1EA6900669021 /* LoginController.swift */,
 				B3A80F952CA585A000397948 /* HeartDataViewController.swift */,
+				B30671CA2CA5D2A8007B22BB /* MedicationController.swift */,
+				B30671CC2CA5D2CC007B22BB /* AddMedicationController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -116,9 +146,10 @@
 		B3CE5B012C70C232006C2452 /* ElderyCare */ = {
 			isa = PBXGroup;
 			children = (
+				B30671D12CA5D346007B22BB /* Views */,
+				B30671CE2CA5D2D8007B22BB /* Models */,
 				B3A80F982CA585B400397948 /* Managers */,
 				B3A80F972CA585A800397948 /* ViewControllers */,
-				B3C882902CA5479E000D5754 /* User.swift */,
 				B3FB391C2CA07CA600669021 /* Config.swift */,
 				B3FB391E2CA1E9FA00669021 /* Supporting */,
 				B3CE5B102C70C234006C2452 /* Info.plist */,
@@ -223,8 +254,12 @@
 			files = (
 				B3CE5B072C70C232006C2452 /* ViewController.swift in Sources */,
 				B31620432CA1F215001CDC90 /* InitController.swift in Sources */,
+				B30671D02CA5D2E2007B22BB /* Day.swift in Sources */,
 				B3CE5B032C70C232006C2452 /* AppDelegate.swift in Sources */,
+				B30671CD2CA5D2CC007B22BB /* AddMedicationController.swift in Sources */,
 				B3FB391B2CA07C2000669021 /* APIManager.swift in Sources */,
+				B30671D32CA5D35E007B22BB /* DaysPickerView.swift in Sources */,
+				B30671CB2CA5D2A8007B22BB /* MedicationController.swift in Sources */,
 				B3FB39192CA07AF700669021 /* BluetoothManager.swift in Sources */,
 				B3A80F962CA585A000397948 /* HeartDataViewController.swift in Sources */,
 				B3FB39222CA1EA8C00669021 /* RegisterController.swift in Sources */,
@@ -233,6 +268,7 @@
 				B3FB391D2CA07CA600669021 /* Config.swift in Sources */,
 				B3A80F942CA565AD00397948 /* DataManager.swift in Sources */,
 				B3C882912CA5479E000D5754 /* User.swift in Sources */,
+				B30671D72CA6D1AD007B22BB /* Medication.swift in Sources */,
 				B3FB39202CA1EA6900669021 /* LoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             // Load the NavigationController from Storyboard
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let navController = storyboard.instantiateViewController(withIdentifier: "NavigationController") as! UINavigationController
+        let navController = storyboard.instantiateViewController(withIdentifier: "NavigationController") as! UINavigationController
             
             window.rootViewController = navController
             self.window = window

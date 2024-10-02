@@ -14,7 +14,7 @@ struct Config {
     static let BLE_Characteristic_uuid_Tx = CBUUID(string: "6e400002-b5a3-f393-e0a9-e50e24dcca9e")
     
     // API URL
-    static let baseURL = "http://192.168.100.112:5008"
+    static let baseURL = "http://192.168.100.9:5008"
     
     // API Endpoints
     struct APIEndpoints {
@@ -25,6 +25,11 @@ struct Config {
         static let login = "/api/Account/login"
         static let register = "/api/Account/register"
         static let bulkHeartRate = "/api/HeartRate/bulkHeartRate"
+        static let markMedication = "/api/MedicationIntake/mark-intake"
+        static let deleteMedication = "/api/Medication/deleteMedication"
+        static let createMedication = "/api/Medication/createMedication"
+        static let allMedication = "/api/Medication/getMedications"
+        static let allDailyMedication = "/api/medication/getDailyMedications"
     }
     
     static let scanTimeoutInterval: TimeInterval = 10.0

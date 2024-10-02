@@ -26,7 +26,7 @@ class APIManager: NSObject, URLSessionDelegate {
         UserDefaults.standard.removeObject(forKey: "currentUser")
     }
 
-    private func createRequest(urlString: String, method: String, body: Any? = nil) -> URLRequest? {
+    func createRequest(urlString: String, method: String, body: Any? = nil) -> URLRequest? {
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
             return nil
@@ -58,7 +58,7 @@ class APIManager: NSObject, URLSessionDelegate {
 
 
     // Handle response helper function
-    private func handleResponse(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, Error>) -> Void) {
+    func handleResponse(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, Error>) -> Void) {
         if let error = error {
             print("API request failed with error: \(error.localizedDescription)")
             completion(.failure(error))
@@ -80,7 +80,7 @@ class APIManager: NSObject, URLSessionDelegate {
             }
         }
     }
-    public func sendPostRequest(to urlString: String, body: [String: Any], completion: @escaping (Result<Data, Error>) -> Void) {
+    func sendPostRequest(to urlString: String, body: [String: Any], completion: @escaping (Result<Data, Error>) -> Void) {
         guard let request = createRequest(urlString: urlString, method: "POST", body: body) else {
             completion(.failure(NSError(domain: "Invalid Request", code: 400, userInfo: nil)))
             return
@@ -106,7 +106,7 @@ class APIManager: NSObject, URLSessionDelegate {
 
 
     // Helper function to parse JSON data
-    private func parseJSONData(_ data: Data, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
+    func parseJSONData(_ data: Data, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         do {
             if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
                 completion(.success(jsonArray))
@@ -195,7 +195,7 @@ class APIManager: NSObject, URLSessionDelegate {
     }
 
     // Function to extract the error message from the server response
-    private func extractErrorMessage(from data: Data) -> String? {
+    func extractErrorMessage(from data: Data) -> String? {
         if let json = try? JSONSerialization.jsonObject(with: data, options: []),
            let jsonDict = json as? [String: Any],
            let message = jsonDict["message"] as? String {
@@ -205,7 +205,7 @@ class APIManager: NSObject, URLSessionDelegate {
     }
 
     // Save user to UserDefaults
-    private func saveUser(_ user: User) {
+    func saveUser(_ user: User) {
         if let encodedUser = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(encodedUser, forKey: "currentUser")
             UserDefaults.standard.set(user.token, forKey: "userToken") // Also save the token separately for easy access
@@ -213,7 +213,7 @@ class APIManager: NSObject, URLSessionDelegate {
     }
 
     // Retrieve the user from UserDefaults
-    public func getUser() -> User? {
+    func getUser() -> User? {
         if let savedUserData = UserDefaults.standard.object(forKey: "currentUser") as? Data,
            let savedUser = try? JSONDecoder().decode(User.self, from: savedUserData) {
             return savedUser
@@ -222,12 +222,12 @@ class APIManager: NSObject, URLSessionDelegate {
     }
 
     // Retrieve the token from UserDefaults
-    public func getToken() -> String? {
+    func getToken() -> String? {
         return UserDefaults.standard.string(forKey: "userToken")
     }
 
     // Extract token from response data
-    private func extractToken(from data: Data) -> String? {
+    func extractToken(from data: Data) -> String? {
         if let json = try? JSONSerialization.jsonObject(with: data, options: []),
            let jsonDict = json as? [String: Any],
            let token = jsonDict["token"] as? String {
@@ -237,7 +237,7 @@ class APIManager: NSObject, URLSessionDelegate {
     }
 
     // Save token to UserDefaults
-    private func saveToken(_ token: String) {
+    func saveToken(_ token: String) {
         UserDefaults.standard.set(token, forKey: "userToken")
     }
 }

@@ -32,6 +32,7 @@ class RegisterController: UIViewController {
     
     @IBOutlet weak var ErrorLabel: UILabel!
     
+    @IBOutlet weak var imageLogo: UIImageView!
     
     @IBAction func registerClicked(_ sender: UIButton) {
         guard let username = usernameTxt.text, !username.isEmpty else {
@@ -97,7 +98,8 @@ class RegisterController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let image = UIImage(named: "Logo_elderly_care_supporting")
+        imageLogo.image = image
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
     }
