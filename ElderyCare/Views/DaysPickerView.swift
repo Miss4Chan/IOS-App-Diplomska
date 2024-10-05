@@ -32,23 +32,34 @@ class DaysPickerView: UIView {
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Add layout constraints for stack view
+        // Center the stackView horizontally and vertically
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
     }
     
     private func createDayButton(for day: Day) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(String(day.fullName.prefix(1)), for: .normal) // Display the first letter of the day
-        button.backgroundColor = .green
+        
+        // Set default unselected state
+        button.backgroundColor = UIColor(red: 0.57, green: 0.74, blue: 0.68, alpha: 1.0) // Subtle greenish-blue
+        button.setTitleColor(.black, for: .normal)
+        
+        // Style button
         button.layer.cornerRadius = 15
         button.clipsToBounds = true
+        button.layer.shadowColor = UIColor.lightGreen.cgColor
+        button.layer.shadowOpacity = 0.3
+        button.layer.shadowRadius = 5
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20) // Adjust font size
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true // Button size
+        button.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
         button.tag = day.rawValue // Use the raw value (0 = Sunday, 1 = Monday, etc.) as the tag
-        button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(dayButtonTapped(_:)), for: .touchUpInside)
         return button
     }
@@ -58,15 +69,26 @@ class DaysPickerView: UIView {
         
         if selectedDays.contains(day) {
             selectedDays.remove(day) // Deselect day
-            sender.backgroundColor = .green
+            sender.backgroundColor = UIColor(red: 0.57, green: 0.74, blue: 0.68, alpha: 1.0) // Subtle greenish-blue
+            sender.setTitleColor(.black, for: .normal)
+            sender.layer.shadowColor = UIColor.lightGreen.cgColor
         } else {
             selectedDays.insert(day) // Select day
-            sender.backgroundColor = .cyan
+            sender.backgroundColor = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0) // Dark green
+            sender.setTitleColor(.white, for: .normal)
+            sender.layer.shadowColor = UIColor.darkGreen.cgColor
         }
     }
-    
+
     // Function to get selected days
     func getSelectedDays() -> [Day] {
         return Array(selectedDays)
     }
 }
+
+// Helper extension to add custom colors
+extension UIColor {
+    static let lightGreen = UIColor(red: 0.6, green: 1.0, blue: 0.6, alpha: 1.0)
+    static let darkGreen = UIColor(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0)
+}
+

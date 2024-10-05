@@ -35,3 +35,4 @@ struct Config {
     static let scanTimeoutInterval: TimeInterval = 10.0
 }
 
+

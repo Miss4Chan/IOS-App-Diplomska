@@ -9,4 +9,5 @@
 struct Medication {
     let medicationId: Int
     let medicationName: String
+    let timeOfDay: String
 }

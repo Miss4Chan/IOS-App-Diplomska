@@ -177,7 +177,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         if heartRateTimer == nil {
             DispatchQueue.main.async {
                 // Set the timer to run on the main thread's run loop
-                self.heartRateTimer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.sendBulkHeartRateData), userInfo: nil, repeats: true)
+                self.heartRateTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(self.sendBulkHeartRateData), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.heartRateTimer!, forMode: .common)
                 print("Heart rate timer started successfully!")
             }

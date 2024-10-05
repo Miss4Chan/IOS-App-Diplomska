@@ -62,10 +62,11 @@ class DataManager {
         }
     }
     
-    func createMedication(name: String, repeatingPattern: [Int], completion: @escaping (Result<Void, Error>) -> Void) {
+    func createMedication(name: String, repeatingPattern: [Int], timeOfDay: String, completion: @escaping (Result<Void, Error>) -> Void) {
             let body: [String: Any] = [
                 "medicationName": name,
-                "repeatingPattern": repeatingPattern
+                "repeatingPattern": repeatingPattern,
+                "timeOfDay": timeOfDay
             ]
 
         APIManager.shared.sendPostRequest(to: "\(Config.baseURL)\(Config.APIEndpoints.createMedication)", body: body) { result in
