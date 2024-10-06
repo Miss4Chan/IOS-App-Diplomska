@@ -102,6 +102,7 @@ class RegisterController: UIViewController {
         imageLogo.image = image
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+    
     }
     
     @objc func dismissKeyboard() {

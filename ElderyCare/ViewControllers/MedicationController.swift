@@ -47,12 +47,10 @@ class MedicationController: UIViewController, UITableViewDelegate, UITableViewDa
             let addMedicationButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addMedicationButtonTapped))
             navigationItem.rightBarButtonItem = addMedicationButton
 
-            // Fetch data on load
             fetchDailyMedications()
             fetchAllMedications()
         }
 
-        // Method to handle the Add Medication button tap
         @objc private func addMedicationButtonTapped() {
             performSegue(withIdentifier: "addMedicationSegue", sender: self)
         }
@@ -65,18 +63,15 @@ class MedicationController: UIViewController, UITableViewDelegate, UITableViewDa
 
         override func viewDidAppear(_ animated: Bool) {
             super.viewDidAppear(animated)
-            // Fetch data again whenever the view reappears
             fetchDailyMedications()
             fetchAllMedications()
         }
 
-        // MARK: - Fetching Data
         private func fetchDailyMedications() {
             DataManager.shared.fetchDailyMedications { result in
                 switch result {
                 case .success(let jsonData):
                     DispatchQueue.main.async {
-                        // Convert jsonData into [Medication]
                         self.dailyMedications = jsonData.compactMap { dict -> Medication? in
                             if let id = dict["medicationId"] as? Int,
                                let name = dict["medicationName"] as? String,
@@ -124,19 +119,16 @@ class MedicationController: UIViewController, UITableViewDelegate, UITableViewDa
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DailyMedicationCell", for: indexPath)
                 let medication = dailyMedications[indexPath.row]
                 
-                // Create a medication name label
                 let nameLabel = UILabel()
                 nameLabel.text = medication.medicationName
                 nameLabel.font = UIFont.systemFont(ofSize: 16)
                 nameLabel.translatesAutoresizingMaskIntoConstraints = false
                 
-                // Create a label for time
                 let timeLabel = UILabel()
                 timeLabel.text = medication.timeOfDay
                 timeLabel.font = UIFont.systemFont(ofSize: 16)
                 timeLabel.translatesAutoresizingMaskIntoConstraints = false
 
-                // Configure buttons as before
                 let takenButton = UIButton(type: .system)
                 takenButton.setTitle("Taken", for: .normal)
                 takenButton.tag = indexPath.row
@@ -152,7 +144,6 @@ class MedicationController: UIViewController, UITableViewDelegate, UITableViewDa
                 buttonStack.spacing = 10
                 buttonStack.translatesAutoresizingMaskIntoConstraints = false
 
-                // Remove any existing subviews and add the new ones
                 for view in cell.contentView.subviews {
                     view.removeFromSuperview()
                 }
@@ -162,15 +153,12 @@ class MedicationController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell.contentView.addSubview(buttonStack)
 
                 NSLayoutConstraint.activate([
-                    // Layout for medication name label
                     nameLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 15),
                     nameLabel.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
 
-                    // Layout for time label
                     timeLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
                     timeLabel.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
 
-                    // Layout for button stack
                     buttonStack.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -15),
                     buttonStack.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
                     buttonStack.heightAnchor.constraint(equalToConstant: 30),
@@ -182,19 +170,16 @@ class MedicationController: UIViewController, UITableViewDelegate, UITableViewDa
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MedicationCell", for: indexPath)
                 let medication = allMedications[indexPath.row]
                 
-                // Create a medication name label
                 let nameLabel = UILabel()
                 nameLabel.text = medication.medicationName
                 nameLabel.font = UIFont.systemFont(ofSize: 16)
                 nameLabel.translatesAutoresizingMaskIntoConstraints = false
                 
-                // Create a label for time
                 let timeLabel = UILabel()
                 timeLabel.text = medication.timeOfDay
                 timeLabel.font = UIFont.systemFont(ofSize: 16)
                 timeLabel.translatesAutoresizingMaskIntoConstraints = false
 
-                // Remove any existing subviews and add the time label and delete button
                 for view in cell.contentView.subviews {
                     view.removeFromSuperview()
                 }
@@ -213,15 +198,12 @@ class MedicationController: UIViewController, UITableViewDelegate, UITableViewDa
                 nameLabel.translatesAutoresizingMaskIntoConstraints = false
 
                 NSLayoutConstraint.activate([
-                    // Layout for medication name label
                     nameLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 15),
                     nameLabel.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
 
-                    // Layout for time label
                     timeLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
                     timeLabel.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
-
-                    // Layout for delete button
+                    
                     deleteButton.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -15),
                     deleteButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
                     deleteButton.heightAnchor.constraint(equalToConstant: 30),

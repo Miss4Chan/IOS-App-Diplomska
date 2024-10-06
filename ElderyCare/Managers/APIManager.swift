@@ -1,14 +1,12 @@
 import Foundation
 
 class APIManager: NSObject, URLSessionDelegate {
-    static let shared = APIManager() // Singleton instance for APIManager
+    static let shared = APIManager()
 
-    // Background session declaration
     private var backgroundSession: URLSession!
 
     override init() {
         super.init()
-        // Background session setup
         let config = URLSessionConfiguration.background(withIdentifier: "com.yourapp.backgroundSession")
         config.sessionSendsLaunchEvents = true
         backgroundSession = URLSession(configuration: config, delegate: self, delegateQueue: nil)
@@ -21,7 +19,6 @@ class APIManager: NSObject, URLSessionDelegate {
     }
 
 
-    // Logout function
     func logout() {
         UserDefaults.standard.removeObject(forKey: "currentUser")
     }
@@ -42,7 +39,6 @@ class APIManager: NSObject, URLSessionDelegate {
             print("No token available")
         }
 
-        // Serialize the body, which can be either an array or dictionary
         if let body = body {
             guard let jsonData = try? JSONSerialization.data(withJSONObject: body) else {
                 print("Failed to serialize request body")
@@ -57,7 +53,6 @@ class APIManager: NSObject, URLSessionDelegate {
 
 
 
-    // Handle response helper function
     func handleResponse(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<Data, Error>) -> Void) {
         if let error = error {
             print("API request failed with error: \(error.localizedDescription)")
@@ -86,13 +81,11 @@ class APIManager: NSObject, URLSessionDelegate {
             return
         }
         
-        // Use a regular session for foreground tasks
         URLSession.shared.dataTask(with: request) { data, response, error in
             self.handleResponse(data: data, response: response, error: error, completion: completion)
         }.resume()
     }
 
-    // GET request
     func sendGetRequest(to urlString: String, completion: @escaping (Result<Data, Error>) -> Void) {
         guard let request = createRequest(urlString: urlString, method: "GET") else {
             completion(.failure(NSError(domain: "Invalid Request", code: 400, userInfo: nil)))
@@ -105,7 +98,6 @@ class APIManager: NSObject, URLSessionDelegate {
     }
 
 
-    // Helper function to parse JSON data
     func parseJSONData(_ data: Data, completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         do {
             if let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
@@ -119,7 +111,6 @@ class APIManager: NSObject, URLSessionDelegate {
         }
     }
 
-    // Login and save user (username and token) on success
     func login(username: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
         let body = ["username": username, "password": password]
 
@@ -128,7 +119,7 @@ class APIManager: NSObject, URLSessionDelegate {
             case .success(let data):
                 if let token = self.extractToken(from: data) {
                     let user = User(username: username, token: token)
-                    self.saveUser(user) // Save the user in UserDefaults
+                    self.saveUser(user)
                     completion(.success(user))
                 } else {
                     let error = NSError(domain: "Token parsing error", code: 400, userInfo: nil)
@@ -152,7 +143,6 @@ class APIManager: NSObject, URLSessionDelegate {
             }
         }
     }
-    // Register and save user (username and token) on success
     func register(username: String, password: String, firstName: String, lastName: String, email: String, dateOfBirth: String, completion: @escaping (Result<User, Error>) -> Void) {
         let body: [String: Any] = [
             "username": username,
@@ -168,7 +158,7 @@ class APIManager: NSObject, URLSessionDelegate {
             case .success(let data):
                 if let token = self.extractToken(from: data) {
                     let user = User(username: username, token: token)
-                    self.saveUser(user) // Save the user in UserDefaults
+                    self.saveUser(user)
                     completion(.success(user))
                 } else {
                     let error = NSError(domain: "Token parsing error", code: 400, userInfo: nil)
@@ -176,17 +166,15 @@ class APIManager: NSObject, URLSessionDelegate {
                 }
                 
             case .failure(let error):
-                // Assume 'error' is an Error, try to extract data from the response (if available)
                 if let nsError = error as NSError?, let responseData = nsError.userInfo["data"] as? Data {
-                    // Try to extract the error message from responseData (if available)
                     if let errorMessage = self.extractErrorMessage(from: responseData) {
                         let customError = NSError(domain: "Server Error", code: 400, userInfo: [NSLocalizedDescriptionKey: errorMessage])
                         completion(.failure(customError))
                     } else {
-                        completion(.failure(nsError)) // Pass the original NSError
+                        completion(.failure(nsError))
                     }
                 } else {
-                    completion(.failure(error)) // Generic failure
+                    completion(.failure(error))
                 }
             }
         }
@@ -194,7 +182,6 @@ class APIManager: NSObject, URLSessionDelegate {
 
     }
 
-    // Function to extract the error message from the server response
     func extractErrorMessage(from data: Data) -> String? {
         if let json = try? JSONSerialization.jsonObject(with: data, options: []),
            let jsonDict = json as? [String: Any],
@@ -204,15 +191,13 @@ class APIManager: NSObject, URLSessionDelegate {
         return nil
     }
 
-    // Save user to UserDefaults
     func saveUser(_ user: User) {
         if let encodedUser = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(encodedUser, forKey: "currentUser")
-            UserDefaults.standard.set(user.token, forKey: "userToken") // Also save the token separately for easy access
+            UserDefaults.standard.set(user.token, forKey: "userToken")
         }
     }
 
-    // Retrieve the user from UserDefaults
     func getUser() -> User? {
         if let savedUserData = UserDefaults.standard.object(forKey: "currentUser") as? Data,
            let savedUser = try? JSONDecoder().decode(User.self, from: savedUserData) {
@@ -221,12 +206,11 @@ class APIManager: NSObject, URLSessionDelegate {
         return nil
     }
 
-    // Retrieve the token from UserDefaults
     func getToken() -> String? {
         return UserDefaults.standard.string(forKey: "userToken")
     }
 
-    // Extract token from response data
+
     func extractToken(from data: Data) -> String? {
         if let json = try? JSONSerialization.jsonObject(with: data, options: []),
            let jsonDict = json as? [String: Any],
@@ -236,7 +220,6 @@ class APIManager: NSObject, URLSessionDelegate {
         return nil
     }
 
-    // Save token to UserDefaults
     func saveToken(_ token: String) {
         UserDefaults.standard.set(token, forKey: "userToken")
     }

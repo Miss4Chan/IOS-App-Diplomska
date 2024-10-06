@@ -17,11 +17,10 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     public var rxCharacteristic: CBCharacteristic?
     public var txCharacteristic: CBCharacteristic?
     
-    private var receivedDataBuffer: String = "" // Buffer to accumulate partial data
+    private var receivedDataBuffer: String = ""
     
     weak var delegate: BluetoothManagerDelegate?
     
-    // BLE UUIDs from configuration
     private let BLE_Service_UUID = Config.BLE_Service_UUID
     private let BLE_Characteristic_uuid_Rx = Config.BLE_Characteristic_uuid_Rx
     private let BLE_Characteristic_uuid_Tx = Config.BLE_Characteristic_uuid_Tx
@@ -36,17 +35,14 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         centralManager = CBCentralManager(delegate: self, queue: DispatchQueue.global(qos: .background))
     }
     
-    // Start scanning for peripherals
     func startScan() {
         centralManager.scanForPeripherals(withServices: [BLE_Service_UUID], options: nil)
     }
     
-    // Stop scanning for peripherals
     func stopScan() {
         centralManager.stopScan()
     }
     
-    // Handle Bluetooth state updates
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if central.state == .poweredOn {
             print("Bluetooth is powered on. Starting scan.")
@@ -57,13 +53,11 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
 
     
-    // Handle peripheral discovery
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         curPeripheral = peripheral
         centralManager.connect(peripheral, options: nil)
     }
     
-    // Handle successful connection to a peripheral
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Successfully connected to peripheral: \(peripheral.name ?? "Unknown")")
         delegate?.didUpdateConnectionStatus(isConnected: true)
@@ -79,7 +73,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
 
     
-    // Discover characteristics for the service
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard let services = peripheral.services else { return }
         for service in services {
@@ -89,7 +82,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    // Assign characteristics once discovered
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
         for characteristic in characteristics {
@@ -102,21 +94,18 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    // Handle incoming data from the Bluetooth peripheral
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         guard characteristic == rxCharacteristic, let data = characteristic.value, let receivedString = String(data: data, encoding: .utf8) else {
             print("No data or incorrect characteristic")
             return
         }
         
-        receivedDataBuffer += receivedString // Accumulate data
+        receivedDataBuffer += receivedString
 
-        // Attempt to process multiple JSON objects if possible
         while let jsonDataRange = receivedDataBuffer.range(of: "}") {
             let jsonString = String(receivedDataBuffer[..<jsonDataRange.upperBound])
             receivedDataBuffer = String(receivedDataBuffer[jsonDataRange.upperBound...])
-            
-            // Process the complete JSON string
+        
             if let jsonData = jsonString.data(using: .utf8),
                let jsonDict = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
                 print("Processing received data: \(jsonString)")
@@ -130,7 +119,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
 
 
-    // Process received data and delegate actions
     private func processReceivedData(_ jsonDict: [String: Any]) {
         guard let heartRate = jsonDict["bpm"] as? Double,
               let timestamp = jsonDict["timestamp"] as? String else {
@@ -160,7 +148,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 print("Unknown event")
             }
         } else {
-            // Accumulate heart rate data for bulk sending
             self.addHeartRateToBuffer(heartRate: heartRate, timestamp: timestamp)
 
             DispatchQueue.main.async {
@@ -173,10 +160,8 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func startHeartRateBuffering() {
         print("Attempting to start heart rate timer...")
 
-        // If a timer is already running, don't start another
         if heartRateTimer == nil {
             DispatchQueue.main.async {
-                // Set the timer to run on the main thread's run loop
                 self.heartRateTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(self.sendBulkHeartRateData), userInfo: nil, repeats: true)
                 RunLoop.main.add(self.heartRateTimer!, forMode: .common)
                 print("Heart rate timer started successfully!")
@@ -187,7 +172,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
 
 
-       // Called when a heart rate value is received
        func addHeartRateToBuffer(heartRate: Double, timestamp: String) {
            heartRateDataBuffer.append((heartRate: heartRate, timestamp: timestamp))
            print("Added new measurement \((heartRate: heartRate, timestamp: timestamp))" );
@@ -203,11 +187,10 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         let bulkData: [[String: Any]] = heartRateDataBuffer.map { ["measurement": $0.heartRate, "timestamp": $0.timestamp] }
         DataManager.shared.sendBulkHeartRateData(bulkData)
         
-        heartRateDataBuffer.removeAll() // Clear buffer after sending
+        heartRateDataBuffer.removeAll()
     }
 
        
-       // Stop the heart rate timer if needed
        func stopHeartRateBuffering() {
            heartRateTimer?.invalidate()
            heartRateTimer = nil

@@ -10,14 +10,12 @@ class DataManager {
             APIManager.shared.sendPostRequestInBackground(to: "\(Config.baseURL)\(endpoint)", body: body)
         }
 
-        // Handle heart rate
         func handleHeartRateData(heartRate: Double, timestamp: String) {
             let body: [String: Any] = ["measurement": heartRate, "timestamp": timestamp]
             sendData(to: Config.APIEndpoints.createHeartRate, body: body)
             print("Sent data from data manager")
         }
 
-        // Handle high heart rate
         func handleHighHeartRateData(heartRate: Double, isConfirmed: Bool, timeOfConfirmation: String, timestamp: String) {
             let body: [String: Any] = [
                 "measurement": heartRate,
@@ -28,7 +26,6 @@ class DataManager {
             sendData(to: Config.APIEndpoints.createHighHeartRate, body: body)
         }
 
-        // Handle fall detection
         func handleFallDetectionData(event: [String: Any]) {
             sendData(to: Config.APIEndpoints.createSuddenMovement, body: event)
         }
@@ -38,7 +35,6 @@ class DataManager {
         print("Bulk heart rate data sent.")
     }
     
-    // Fetch daily medications
     func fetchDailyMedications(completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         APIManager.shared.sendGetRequest(to: "\(Config.baseURL)\(Config.APIEndpoints.allDailyMedication)") { result in
             switch result {
@@ -50,7 +46,6 @@ class DataManager {
         }
     }
 
-    // Fetch all medications
     func fetchAllMedications(completion: @escaping (Result<[[String: Any]], Error>) -> Void) {
         APIManager.shared.sendGetRequest(to: "\(Config.baseURL)\(Config.APIEndpoints.allMedication)") { result in
             switch result {
@@ -92,7 +87,7 @@ class DataManager {
                }
            }
        }
-    // Delete medication
+    
     func deleteMedication(medicationId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         APIManager.shared.sendPostRequest(to: "\(Config.baseURL)\(Config.APIEndpoints.deleteMedication)/\(medicationId)", body: [:]) { result in
             switch result {

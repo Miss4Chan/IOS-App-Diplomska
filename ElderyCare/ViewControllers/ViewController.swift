@@ -2,6 +2,14 @@ import UIKit
 
 class ViewController: UIViewController, BluetoothManagerDelegate {
     
+    
+    
+    @IBOutlet weak var heartRateDataView: UIView!
+    
+    @IBOutlet weak var eventView: UIView!
+    
+    @IBOutlet weak var bluetoothConnectionView: UIView!
+    
     @IBOutlet weak var connectionLbl: UILabel!
     @IBOutlet weak var dataLbl: UILabel!
     @IBOutlet weak var eventDataLbl: UILabel!
@@ -12,7 +20,6 @@ class ViewController: UIViewController, BluetoothManagerDelegate {
                }
                BluetoothManager.shared.startScan()
     }
-
     
     func didUpdateConnectionStatus(isConnected: Bool) {
         DispatchQueue.main.async {
@@ -29,6 +36,32 @@ class ViewController: UIViewController, BluetoothManagerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        eventView.layer.shadowOpacity = 0.7;
+        eventView.layer.shadowOffset = CGSize(width: 3, height: 3);
+        eventView.layer.shadowRadius = 15.0;
+        eventView.layer.shadowColor = UIColor.darkGray.cgColor;
+        
+        bluetoothConnectionView.layer.shadowOpacity = 0.7;
+        bluetoothConnectionView.layer.shadowOffset = CGSize(width: 3, height: 3);
+        bluetoothConnectionView.layer.shadowRadius = 15.0;
+        bluetoothConnectionView.layer.shadowColor = UIColor.darkGray.cgColor;
+        
+        heartRateDataView.layer.shadowOpacity = 0.7;
+        heartRateDataView.layer.shadowOffset = CGSize(width: 3, height: 3);
+        heartRateDataView.layer.shadowRadius = 15.0;
+        heartRateDataView.layer.shadowColor = UIColor.darkGray.cgColor;
+        
+        
+        eventView.layer.cornerRadius = 10.0
+        eventView.layer.masksToBounds = false
+        bluetoothConnectionView.layer.cornerRadius = 10.0
+        bluetoothConnectionView.layer.masksToBounds = false
+        heartRateDataView.layer.cornerRadius = 10.0
+        heartRateDataView.layer.masksToBounds = false
+        
+        
         self.navigationItem.title = "Elder Care"
         BluetoothManager.shared.delegate = self
         
@@ -43,7 +76,7 @@ class ViewController: UIViewController, BluetoothManagerDelegate {
     
     private func navigateToInitialViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let initialViewController = storyboard.instantiateViewController(withIdentifier: "NavigationController") // Replace with your initial view controller identifier
+        let initialViewController = storyboard.instantiateViewController(withIdentifier: "NavigationController")
         
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = scene.windows.first {
@@ -52,32 +85,61 @@ class ViewController: UIViewController, BluetoothManagerDelegate {
         }
     }
     func didReceiveRegularHeartRate(_ heartRate: Double, timestamp: String) {
-        // Simulate parsing data from the background API call
         DispatchQueue.global(qos: .background).async {
-            // Assume data is received from the background API and parsed here
 
-            // Once parsed, update the UI on the main thread
-            DispatchQueue.main.async {
-                self.dataLbl.text = "HR: \(heartRate), Timestamp: \(timestamp)"
-                self.eventDataLbl.text = ""
+            let timestampString = timestamp
+
+            let inputDateFormatter = DateFormatter()
+            inputDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            inputDateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+            if let date = inputDateFormatter.date(from: timestampString) {
+                let outputDateFormatter = DateFormatter()
+                
+                outputDateFormatter.dateFormat = "HH:mm:ss"
+                let timeString = outputDateFormatter.string(from: date)
+                
+                outputDateFormatter.dateFormat = "yyyy-MM-dd"
+                let dateString = outputDateFormatter.string(from: date)
+                
+                DispatchQueue.main.async {
+                    self.dataLbl.text = "HR: \(heartRate), Time: \(timeString)\nDate: \(dateString)"
+                    self.eventDataLbl.text = ""
+                }
+            } else {
+                print("Failed to parse the timestamp string into Date.")
             }
+
         }
     }
 
     func didReceiveHighHeartRate(_ heartRate: Double, isConfirmed: Bool, timeOfConfirmation: String, timestamp: String) {
         let confirmationStatus = isConfirmed ? "Yes" : "No"
         
-        // Simulate parsing data from the background API call
+        let inputDateFormatter = DateFormatter()
+        inputDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        inputDateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
         DispatchQueue.global(qos: .background).async {
-            // Assume data is received from the background API and parsed here
-            
-            // Once parsed, update the UI on the main thread
-            DispatchQueue.main.async {
-                self.dataLbl.text = "HR: \(heartRate), Timestamp: \(timestamp)"
-                self.eventDataLbl.text = "High BPM: Confirmed: \(confirmationStatus)"
+            if let date = inputDateFormatter.date(from: timestamp) {
+                let outputDateFormatter = DateFormatter()
+                
+                outputDateFormatter.dateFormat = "HH:mm:ss"
+                let timeString = outputDateFormatter.string(from: date)
+                
+                outputDateFormatter.dateFormat = "yyyy-MM-dd"
+                let dateString = outputDateFormatter.string(from: date)
+                
+                DispatchQueue.main.async {
+                    self.dataLbl.text = "HR: \(heartRate), Time: \(timeString)\nDate: \(dateString)"
+                    self.eventDataLbl.text = "High BPM -- Confirmed: \(confirmationStatus)"
+                }
+            } else {
+                print("Failed to parse the timestamp string into Date.")
             }
         }
     }
+
 
         // Fall detection event received
     func didReceiveFallDetection(event: [String: Any]) {
@@ -89,7 +151,7 @@ class ViewController: UIViewController, BluetoothManagerDelegate {
             
             // Once parsed, update the UI on the main thread
             DispatchQueue.main.async {
-                self.eventDataLbl.text = "Fall Detected: Confirmed: \(confirmed)"
+                self.eventDataLbl.text = "Fall Detected --  Confirmed: \(confirmed)"
             }
         }
     }

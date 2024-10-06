@@ -28,16 +28,13 @@ class HeartDataViewController: UIViewController {
         
             chartView.xAxis.valueFormatter = TimeAxisValueFormatter()
             
-            // Optional: Customize x-axis label position and appearance
             chartView.xAxis.labelPosition = .bottom
             chartView.xAxis.granularity = 1
 
-            // Set default date range to current day
             let today = Date()
             fromDatePicker.date = Calendar.current.startOfDay(for: today)
             toDatePicker.date = today
 
-            // Fetch and display data for the current day
             fetchHeartRateData()
         }
 
@@ -47,16 +44,14 @@ class HeartDataViewController: UIViewController {
 
     func fetchHeartRateData() {
         let dateFormatter = ISO8601DateFormatter()
-        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // Enable fractional seconds
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
-        // Get the selected dates from the date pickers
         let fromDate = fromDatePicker.date
         let toDate = toDatePicker.date
 
         let fromDateString = dateFormatter.string(from: fromDate)
         let toDateString = dateFormatter.string(from: toDate)
 
-        // Fetch the data from the backend
         APIManager.shared.getRecentHeartRate(from: fromDateString, to: toDateString) { result in
             switch result {
             case .success(let heartRateData):
@@ -70,7 +65,6 @@ class HeartDataViewController: UIViewController {
     func updateChart(with heartRateData: [[String: Any]]) {
         var chartEntries: [ChartDataEntry] = []
 
-        // Custom date formatter to handle fractional seconds
         let customDateFormatter = DateFormatter()
         customDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
         customDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
@@ -89,18 +83,16 @@ class HeartDataViewController: UIViewController {
 
         print("Chart entries: \(chartEntries)")
 
-        // If no chart entries are available, set the noDataText
         guard !chartEntries.isEmpty else {
             DispatchQueue.main.async {
-                self.chartView.clear() // Clears any previous data
+                self.chartView.clear()
                 self.chartView.noDataText = "No data available for the selected period"
             }
             return
         }
 
-        // Clear the previous chart data to avoid showing stale data
         DispatchQueue.main.async {
-            self.chartView.data = nil // Clear existing data
+            self.chartView.data = nil
             let dataSet = LineChartDataSet(entries: chartEntries, label: "Heart Rate")
             dataSet.colors = [.blue]
             dataSet.circleColors = [.red]
@@ -108,9 +100,8 @@ class HeartDataViewController: UIViewController {
 
             let chartData = LineChartData(dataSet: dataSet)
 
-            // Update the chart with new data
             self.chartView.data = chartData
-            self.chartView.notifyDataSetChanged() // Refresh the chart
+            self.chartView.notifyDataSetChanged()
         }
     }
 
